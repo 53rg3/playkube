@@ -1,0 +1,14 @@
+version: "2"
+
+services:
+  playkube:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - CONFIG_MAP=some config
+      - SECRET=some secret
+      - PLAY_SECRET_KEY=9ac35bbfa6568318d1f0349e21388d4e7b30310b8806c5ff3cac61312a578120
+    container_name: playkube
+    ports:
+      - "9000:9000"

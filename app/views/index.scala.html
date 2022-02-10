@@ -1,0 +1,43 @@
+@(title: String, homeContent: HomeContent)
+
+@main(title) {
+
+  <table>
+    <tr>
+      <td><h3>ENV CONFIG_MAP:</h3></td>
+      <td>@homeContent.envValueConfigMap</td>
+    </tr>
+    <tr>
+      <td><h3>ENV SECRET:</h3></td>
+      <td>@homeContent.envValueSecret</td>
+    </tr>
+    <tr>
+      <td><h3>conf/configmap_file</h3></td>
+      <td>
+        <form action="/save-config?configmap" method="post">
+          <label for="config"></label>
+          <textarea id="config" name="text" rows="10" cols="50">@homeContent.fileFromConfigMap</textarea><br>
+          <button>Save</button>
+        </form>
+      </td>
+    </tr>
+    <tr>
+      <td><h3>conf/secret_file</h3></td>
+      <td>
+      <form action="/save-config?secret" method="post">
+        <label for="config"></label>
+        <textarea id="config" name="text" rows="10" cols="50">@homeContent.fileFromSecret</textarea><br>
+        <button>Save</button>
+      </form>
+      </td>
+    </tr>
+  </table>
+
+
+
+
+
+
+}
+
+

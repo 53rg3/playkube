@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose --file ../docker-compose.yml convert
+    kompose.version: 1.26.0 (40646f47)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: playkube
+  name: playkube
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: playkube
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose --file ../docker-compose.yml convert
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: playkube
+    spec:
+      containers:
+        - env:
+            - name: CONFIG_MAP
+              value: some value
+            - name: PLAY_SECRET_KEY
+              value: 9ac35bbfa6568318d1f0349e21388d4e7b30310b8806c5ff3cac61312a578120
+            - name: SECRET
+              value: some secret
+          image: sergsch/playkube
+          name: playkube
+          ports:
+            - containerPort: 9000
+          resources: {}
+      restartPolicy: Always
+status: {}
