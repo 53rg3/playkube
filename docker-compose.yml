@@ -1,4 +1,4 @@
-version: "2"
+version: "3.7"
 
 services:
   playkube:
@@ -12,3 +12,8 @@ services:
     container_name: playkube
     ports:
       - "9000:9000"
+    volumes:
+        - conf_dir:/app/conf
+
+volumes:
+  conf_dir: {}

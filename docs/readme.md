@@ -26,6 +26,44 @@ docker docker-compose up
 
 
 
+# Volumes
+
+- Uses a named volume, see `docker-compose.yml`
+
+- Docker will automatically copy the content from `/app/conf` into the volume folder it created. 
+
+  ```yaml
+  # ...
+      volumes:
+          - conf_dir:/app/conf
+  
+  volumes:
+    conf_dir: {}
+  ```
+
+- Find path via (see "Mountpoint"):
+
+  ```bash
+  docker volume ls
+  docker volume inspect playkube_conf_dir
+  ```
+
+- You can make a bind mount out of that via:
+
+  ```yaml
+  # ...
+      volumes:
+          - /home/cc/Desktop/_trash/playkube_volume/conf_dir:/app/conf
+  # no `volumes:` block afterwards
+  ```
+
+  But keep in mind that Docker will not copy any content. 
+
+  - If the path does not exist then Docker will create an empty folder and mount it into the container, i.e. `/app/conf` will be an empty folder in the container.
+  - If the path exists, then Docker will mount the folder into the container. All files available in the folder are accessible in the container. 
+
+
+
 # Kubernetes
 
 - Manifests were created via `kompose` (see [here](https://kubernetes.io/docs/tasks/configure-pod-container/translate-compose-kubernetes/))
