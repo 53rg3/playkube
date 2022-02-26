@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: playkube-config
+data:
+  CONFIG_MAP: |
+    This is from the config map

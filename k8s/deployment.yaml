@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: playkube
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: playkube
+
+  template:
+    metadata:
+      labels:
+        app: playkube
+
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: playkube
+          image: sergsch/playkube
+
+          env:
+            - name: CONFIG_MAP
+              value: some value
+            - name: PLAY_SECRET_KEY
+              value: 9ac35bbfa6568318d1f0349e21388d4e7b30310b8806c5ff3cac61312a578120
+            - name: SECRET
+              value: some secret
+
+          ports:
+            - containerPort: 9000
+
+          volumeMounts:
+            - name: config-volume
+              mountPath: /app/conf/configmap_file
+              subPath: configmap_file
+
+            - name: secret-volume
+              mountPath: /app/conf/secret_file
+              subPath: secret_file
+
+      volumes:
+        - name: config-volume
+          configMap:
+            name: playkube-config
+            items:
+              - key: CONFIG_MAP
+                path: configmap_file
+
+        - name: secret-volume
+          secret:
+            secretName: playkube-secret
+            items:
+              - key: SECRET
+                path: secret_file
