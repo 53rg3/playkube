@@ -1,3 +1,10 @@
+# Routes
+
+Note that the main route is:
+```
+/playkube
+```
+
 # Import in Intellij
 
 - New > Import project from existing sources > sbt project
@@ -8,8 +15,7 @@
 # Build Docker image
 
 ```
-docker build .
-docker run -e PLAY_SECRET_KEY=12dddddddd3 -e SECRET=123 -p 9000:9000 6952842f0bdd
+docker build . --tag sergsch/playkube:latest
 ```
 
 For development use Docker Compose:
@@ -18,12 +24,21 @@ For development use Docker Compose:
 docker docker-compose up
 ```
 
+Or directly with something like that:
+```
+docker run -e PLAY_SECRET_KEY=12dddddddd3 -e SECRET=123 -p 9000:9000 6952842f0bdd
+```
 
 
-# Docker Hub
+
+# Push to Docker Hub
 
 - See https://hub.docker.com/r/sergsch/playkube
 
+```
+docker login
+docker push sergsch/playkube:latest
+```
 
 
 # Volumes
@@ -74,10 +89,10 @@ docker docker-compose up
   kubectl apply -f ./
   ```
 
-- You will need to add `type: LoadBalancer` & `nodePort: 31001`
+- You will need to add `type: NodePort` & `nodePort: 31001`
 
   ```
-    type: LoadBalancer
+    type: NodePort
     ports:
       - name: "9000"
         port: 9000
@@ -85,4 +100,3 @@ docker docker-compose up
         nodePort: 31001
   ```
 
-  

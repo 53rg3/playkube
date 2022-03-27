@@ -1,0 +1,89 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: playkube
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: playkube
+
+  template:
+    metadata:
+      labels:
+        app: playkube
+
+    spec:
+      restartPolicy: Always
+
+      initContainers:
+        - name: playkube-init
+          image: sergsch/playkube
+          command: ["bash", "-c", "false | cp -ai /app/conf/* /tmp/init 2>/dev/null"]
+          volumeMounts:
+            - name: local-volume
+              mountPath: /tmp/init
+
+      containers:
+        - name: playkube
+          image: sergsch/playkube
+
+          env:
+            - name: CONFIG_MAP
+              value: config_map value from manifest.yml
+
+            - name: PLAY_SECRET_KEY
+              value: 9ac35bbfa6568318d1f0349e21388d4e7b30310b8806c5ff3cac61312a578120
+
+            - name: SECRET
+              value: some secret
+
+          ports:
+            - containerPort: 9000
+
+          volumeMounts:
+            - name: local-volume
+              mountPath: /app/conf
+
+      volumes:
+        - name: local-volume
+          persistentVolumeClaim:
+            claimName: playkube-volume-claim
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: playkube-service
+spec:
+  type: LoadBalancer
+  ports:
+    - name: "9000"
+      port: 9000
+      targetPort: 9000
+  selector:
+    app: playkube
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: playkube-ingress
+spec:
+  ingressClassName: nginx
+  defaultBackend:
+    service:
+      name: playkube-service
+      port:
+        number: 9000
+  rules:
+    - host: example.loc
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: playkube-service
+                port:
+                  number: 9000
