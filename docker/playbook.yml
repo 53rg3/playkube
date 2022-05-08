@@ -1,0 +1,15 @@
+---
+- hosts: localhost
+  gather_facts: no
+
+  tasks:
+
+    - name: Render Dockerfile
+      template:
+        src: templates/Dockerfile
+        dest: ../Dockerfile
+
+    - name: Render docker-compose.yml
+      template:
+        src: templates/docker-compose.yml
+        dest: ../docker-compose.yml

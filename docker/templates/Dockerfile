@@ -4,7 +4,7 @@ ARG SBT_VERSION=1.5.2
 ENV APP_HOME=/app/
 
 WORKDIR $APP_HOME
-ADD . $APP_HOME
+ADD ../.. $APP_HOME
 
 RUN \
   mkdir /working/ && \
