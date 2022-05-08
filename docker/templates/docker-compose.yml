@@ -8,6 +8,7 @@ services:
     environment:
       - CONFIG_MAP=some config
       - SECRET=some secret
+      - PLAY_SECRET_KEY={{ play_secret }}
     container_name: playkube
     ports:
       - "9000:9000"
