@@ -32,4 +32,4 @@ COPY --from=BUILD_IMAGE $APP_HOME/target/universal/stage/ .
 RUN apk add bash
 
 EXPOSE 9000
-ENTRYPOINT bash bin/playkube -Dplay.http.secret.key={{ play_secret }}
+ENTRYPOINT bash bin/playkube -Dplay.http.secret.key=${PLAY_SECRET_KEY}
